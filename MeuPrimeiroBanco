@@ -1,0 +1,212 @@
+package teste;
+import java.util.Scanner;
+
+public class ContaBanco {
+
+	public int numConta;
+	protected String tipo;
+	private String dono;
+	private float saldo;
+	private boolean status;
+	float valor;
+	float saldoImposto;
+	
+	public ContaBanco() {
+		this.numConta = numConta;
+		this.tipo = tipo;
+		this.dono = dono;
+		this.saldo = saldo;
+		this.status = status;
+	}
+	public void exibirInformacoes() {
+	    System.out.println("Número da Conta: " + getNumConta());
+	    System.out.println("Tipo de Conta: " + getTipo());
+	    System.out.println("Nome do Dono: " +getDono());
+	    System.out.println("Saldo - R$: " + getSaldo());
+	    System.out.println("Status da Conta: " + (isStatus() ? "Aberta" : "Fechada"));
+	}
+	public int getNumConta() {
+		return numConta;
+	}
+	public void setNumConta(int numConta) {
+		this.numConta = numConta;
+	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+	
+	public void setTipo(String setTipo) {
+		this.tipo = setTipo;
+		// System.out.println("Você está abrindo uma conta, selecione o tipo \nCP para Conta Poupança \n CC para Conta Corrente: ");
+		if (setTipo.equalsIgnoreCase("cc")) {
+			tipo = "Corrente";
+			saldo += 50;
+			System.out.println("Conta Corrente Selecionada!");
+		}
+		else if(setTipo.equalsIgnoreCase("CP")) {
+			tipo = "Poupança";
+			saldo+=150;
+			System.out.println("Conta Poupança Selecionada!");
+		}
+		else {
+			System.out.println("Tipo de conta inválido. Use 'cc' para Corrente ou 'cp' para Poupança.");
+		}
+		
+		
+	}
+
+	public String getDono() {
+		return dono;
+	}
+
+	public void setDono(String dono) {
+		this.dono = dono;
+	}
+
+	public float getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(float saldo) {
+		this.saldo = saldo;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+		if(status == true) {
+			System.out.println("Conta Aberta");
+		}
+		else {
+			System.out.println("Conta Fechada");
+		}
+		
+		
+	}
+	
+	public void abrirConta() {
+			status = true;
+		}
+
+	public void fecharConta() {
+		if (status==true && saldo==0) {
+			System.out.println("Conta encerrada com sucesso");
+			status = false;
+		}
+		else {
+			System.out.println("Retire o saldo antes de fechar a conta");
+		}
+
+	}
+	
+	public void depositar(float valorDeposito) {
+		if (status==true) {
+			saldo += valorDeposito;
+		}
+		
+	}
+	public void sacar(float valorSaque) {
+		if(saldo>valor) {
+			saldo = (saldo-valorSaque);
+	
+		}
+		else {
+			System.out.println("Valor Insuficiente");
+		}
+		
+	}
+	
+	public void pagarMensal() {
+		switch (tipo) {
+		case ("cc"):
+			saldoImposto = saldo - 12;
+		break;
+		case ("cp"):
+			saldoImposto = saldo - 20;
+		break;
+		
+	
+	
+		
+}}}
+
+//CLASSE MAIN
+package teste;
+import java.util.Scanner;
+
+public class Main extends ContaBanco{
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner (System.in);
+		ContaBanco c1 = new ContaBanco();
+		
+		 while (true) {
+			 System.out.println("\nMenu:");
+			 System.out.println("1. Abrir Conta");
+			 System.out.println("2. Ver Informações");
+			 System.out.println("3. Depositar");
+			 System.out.println("4. Sacar");
+			 System.out.println("5. Fechar Conta");
+			 System.out.println("6. Sair");
+			 System.out.print("Escolha uma opção: ");
+
+			 int opcao = scanner.nextInt();
+			 
+			 switch (opcao) {
+
+			 case 1:
+				 c1.abrirConta();
+				 System.out.println("Você está abrindo uma conta. INFORME \n Qual será o nome do titular da conta?");
+				 //	String nome = scanner.nextLine();
+				 	scanner.nextLine();
+				 	String nome = scanner.nextLine();
+				 	c1.setDono(nome);
+				 	//c1.getDono();
+				 System.out.println("Qual será o número da conta? UTILIZE SEU CPF");
+				 int cpf = scanner.nextInt();
+				 c1.setNumConta(cpf);
+				// c1.getNumConta();
+				    System.out.println("Você está abrindo uma conta, selecione o tipo \n CP para Conta Poupança \n CC para Conta Corrente: ");
+				    scanner.nextLine(); 
+				    String tipo = scanner.nextLine().toLowerCase();
+				    c1.setTipo(tipo);
+				    System.out.println("Tipo de conta selecionado: " + c1.getTipo());
+				    break;
+				    
+				  
+				    
+			 case 2:
+				c1.exibirInformacoes();
+				  break;  
+			 case 3:
+				 System.out.println("Saldo atual R$: " +c1.getSaldo()+"\n Qual valor quer depositar?");
+				 float valorDeposito = scanner.nextFloat();
+				 c1.depositar(valorDeposito);
+				 System.out.println("Novo saldo: R$"+c1.getSaldo());
+				 break;
+				 
+			 case 4:
+				 System.out.println("Saldo atual R$: " +c1.getSaldo()+"\n Qual valor quer sacar?");
+				 float valorSaque = scanner.nextFloat();
+				 c1.sacar(valorSaque);
+				 System.out.println("Novo saldo: R$"+c1.getSaldo());
+				 break;
+				 
+			 case 5:
+				 System.out.println("Encerrando Conta...");
+				 c1.fecharConta();
+				 break;
+				 
+			 case 6:
+				 System.out.println("Saindo do programa. Obrigado!");
+				 scanner.close();
+				 System.exit(0);
+			 }
+	}
+
+}}
